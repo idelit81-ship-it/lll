@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Z-HORROR</title>
+
+<style>
+:root{
+    --text:#f2f2f2;
+    --muted:rgba(255,255,255,.48);
+    --dim:rgba(255,255,255,.24);
+    --line:rgba(255,255,255,.075);
+    --glass:rgba(7,8,10,.54);
+    --accent:#b32c2c;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+    width:100%;
+    height:100%;
+    margin:0;
+    overflow:hidden;
+    background:#070809;
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+    user-select:none;
+}
+
+#scene{
+    position:fixed;
+    inset:-3%;
+    background:
+        linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.36) 46%,rgba(0,0,0,.47) 100%),
+        linear-gradient(180deg,rgba(0,0,0,.14),rgba(0,0,0,.42)),
+        url("https://raw.githubusercontent.com/idelit81-ship-it/songs/main/566fbf7cb268f94c3eb38dd1d2fceb07.jpg")
+        center/cover no-repeat;
+    filter:saturate(.72) brightness(.72) contrast(1.04);
+    animation:camera 33s ease-in-out infinite alternate;
+}
+
+@keyframes camera{
+    0%{
+        transform:scale(1.045) translate3d(-0.45%,-0.35%,0);
+    }
+
+    100%{
+        transform:scale(1.075) translate3d(1.15%,1.05%,0);
+    }
+}
+
+#shade{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+        radial-gradient(circle at 55% 45%,transparent 36%,rgba(0,0,0,.18) 64%,rgba(0,0,0,.52) 100%);
+}
+
+#grain{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.025;
+    background-image:
+        repeating-radial-gradient(circle at 0 0,#fff 0 1px,transparent 1px 4px);
+    background-size:6px 6px;
+    mix-blend-mode:overlay;
+}
+
+/* TOP */
+#top{
+    position:absolute;
+    top:28px;
+    left:32px;
+    right:32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+}
+
+#brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+#logo{
+    width:34px;
+    height:34px;
+    border:1px solid rgba(255,255,255,.13);
+    background:rgba(0,0,0,.20);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:-.05em;
+    backdrop-filter:blur(8px);
+}
+
+#brandText{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+
+#serverName{
+    max-width:620px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.02em;
+}
+
+#sub{
+    color:var(--dim);
+    font-size:9px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+}
+
+#meta{
+    display:flex;
+    gap:22px;
+    padding:9px 12px;
+    border:1px solid var(--line);
+    background:rgba(0,0,0,.18);
+    backdrop-filter:blur(10px);
+}
+
+.meta{
+    min-width:112px;
+}
+
+.metaLabel{
+    color:var(--dim);
+    font-size:8px;
+    font-weight:700;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+}
+
+.metaValue{
+    margin-top:4px;
+    max-width:190px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    color:rgba(255,255,255,.73);
+    font-size:11px;
+}
+
+/* CENTER */
+#center{
+    position:absolute;
+    left:6vw;
+    top:48%;
+    transform:translateY(-50%);
+    width:min(790px,76vw);
+}
+
+#title{
+    margin:0;
+    font-size:clamp(69px,9.4vw,138px);
+    line-height:.9;
+    letter-spacing:-.06em;
+    font-weight:900;
+    color:#f0f0f0;
+}
+
+#title span{
+    color:#d6d6d6;
+}
+
+#rule{
+    width:90px;
+    height:3px;
+    margin-top:25px;
+    background:var(--accent);
+    opacity:.85;
+}
+
+#statusMain{
+    margin-top:25px;
+    color:rgba(255,255,255,.62);
+    font-size:17px;
+    line-height:1.55;
+}
+
+#smallInfo{
+    margin-top:11px;
+    color:rgba(255,255,255,.32);
+    font-size:13px;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+}
+
+
+#tip{
+    margin-top:30px;
+    max-width:790px;
+
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+
+    padding-top:18px;
+    border-top:1px solid rgba(255,255,255,.075);
+}
+
+#tipLabel{
+    flex:0 0 auto;
+
+    color:rgba(255,255,255,.24);
+
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+
+    padding-top:2px;
+}
+
+#tipText{
+    color:rgba(255,255,255,.62);
+
+    font-size:14px;
+    line-height:1.58;
+
+    transition:
+        opacity .37s ease,
+        transform .37s ease;
+}
+
+#tipText.hide{
+    opacity:0;
+    transform:translateY(3px);
+}
+
+.tipCode{
+    color:rgba(255,255,255,.86);
+    font-family:Consolas,Monaco,monospace;
+    font-size:12px;
+}
+
+
+/* MUSIC */
+#musicControl{
+    position:absolute;
+    right:32px;
+    top:86px;
+
+    height:34px;
+    padding:0 12px;
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    border:1px solid rgba(255,255,255,.075);
+    background:rgba(7,8,10,.42);
+    backdrop-filter:blur(12px);
+
+    color:rgba(255,255,255,.58);
+
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+
+    cursor:pointer;
+
+    transition:
+        color .18s ease,
+        background .18s ease,
+        border-color .18s ease;
+}
+
+#musicControl:hover{
+    color:rgba(255,255,255,.88);
+    background:rgba(7,8,10,.68);
+    border-color:rgba(255,255,255,.13);
+}
+
+#musicIcon{
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.65);
+
+    box-shadow:0 0 9px rgba(255,255,255,.10);
+}
+
+#musicControl.muted #musicIcon{
+    background:#7b2323;
+}
+
+@media(max-width:850px){
+    #musicControl{
+        right:20px;
+        top:66px;
+    }
+}
+
+
+/* BOTTOM */
+#loading{
+    position:absolute;
+    left:32px;
+    right:32px;
+    bottom:28px;
+    padding:13px 14px 12px;
+    border:1px solid var(--line);
+    background:var(--glass);
+    backdrop-filter:blur(14px);
+}
+
+#loadingTop{
+    display:flex;
+    justify-content:space-between;
+    gap:22px;
+    margin-bottom:10px;
+}
+
+#statusWrap{
+    min-width:0;
+}
+
+#status{
+    max-width:900px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    color:rgba(255,255,255,.72);
+    font-size:11px;
+    font-weight:600;
+}
+
+#counter{
+    margin-top:3px;
+    color:rgba(255,255,255,.24);
+    font-size:9px;
+}
+
+#percent{
+    color:rgba(255,255,255,.50);
+    font-size:11px;
+    font-weight:700;
+}
+
+#bar{
+    width:100%;
+    height:3px;
+    overflow:hidden;
+    background:rgba(255,255,255,.06);
+}
+
+#fill{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#702020,var(--accent),#c7c7c7);
+    transition:width .25s ease;
+}
+
+#foot{
+    margin-top:9px;
+    color:rgba(255,255,255,.16);
+    font-size:8px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+}
+
+@media(max-width:850px){
+    #meta{display:none}
+    #center{
+        left:28px;
+        width:calc(100vw - 56px);
+    }
+
+    #title{
+        font-size:clamp(60px,13vw,104px);
+    }
+
+    #tipText{
+        font-size:12px;
+    }
+    #top{
+        left:20px;
+        right:20px;
+        top:18px;
+    }
+    #loading{
+        left:20px;
+        right:20px;
+        bottom:18px;
+    }
+}
+</style>
+</head>
+
+<body>
+<div id="scene"></div>
+<div id="shade"></div>
+<div id="grain"></div>
+
+<div id="top">
+    <div id="brand">
+        <div id="logo">Z</div>
+        <div id="brandText">
+            <div id="serverName">Z-HORROR</div>
+            <div id="sub">Z-CITY HORROR SERVER</div>
+        </div>
+    </div>
+
+    <div id="meta">
+        <div class="meta">
+            <div class="metaLabel">Карта</div>
+            <div class="metaValue" id="mapName">...</div>
+        </div>
+
+        <div class="meta">
+            <div class="metaLabel">Режим</div>
+            <div class="metaValue" id="gamemodeName">...</div>
+        </div>
+    </div>
+</div>
+
+<button id="musicControl" type="button" aria-label="Переключить музыку">
+    <span id="musicIcon"></span>
+    <span id="musicLabel">ЗВУК: ВКЛ</span>
+</button>
+
+<audio id="bgMusic" preload="auto" autoplay>
+    <source src="https://raw.githubusercontent.com/idelit81-ship-it/songs/main/Fears%20to%20Fathom%20-%20Ironbark%20Lookout%20_%20Truck%20Radio%20Song%20%233%20%28Come%20Home%29%20%E2%99%AA%20%5BSound%20Effect%5D_128k.mp3" type="audio/mpeg">
+</audio>
+
+<div id="center">
+    <h1 id="title">Z-<span>HORROR</span></h1>
+    <div id="rule"></div>
+
+    <div id="statusMain">
+        Подключение к серверу
+    </div>
+
+    <div id="smallInfo">
+        загрузка контента
+    </div>
+
+    <div id="tip">
+        <div id="tipLabel">Подсказка</div>
+        <div id="tipText">
+            Пинок назначен на <span class="tipCode">V</span>: <span class="tipCode">bind v hg_kick</span>.
+        </div>
+    </div>
+</div>
+
+<div id="loading">
+    <div id="loadingTop">
+        <div id="statusWrap">
+            <div id="status">Подготовка к подключению...</div>
+            <div id="counter">Ожидание данных Garry's Mod</div>
+        </div>
+        <div id="percent">0%</div>
+    </div>
+
+    <div id="bar">
+        <div id="fill"></div>
+    </div>
+
+    <div id="foot">Z-HORROR / CONNECTION</div>
+</div>
+
+<script>
+(function(){
+    "use strict";
+
+    var serverName = document.getElementById("serverName");
+    var mapName = document.getElementById("mapName");
+    var gamemodeName = document.getElementById("gamemodeName");
+
+    var status = document.getElementById("status");
+    var counter = document.getElementById("counter");
+    var percent = document.getElementById("percent");
+    var fill = document.getElementById("fill");
+    var statusMain = document.getElementById("statusMain");
+    var tipText = document.getElementById("tipText");
+
+    var bgMusic = document.getElementById("bgMusic");
+    var musicControl = document.getElementById("musicControl");
+    var musicLabel = document.getElementById("musicLabel");
+
+    var musicStarted = false;
+
+    function updateMusicButton(){
+        if(!bgMusic) return;
+
+        if(bgMusic.muted || bgMusic.volume <= 0){
+            musicControl.classList.add("muted");
+            musicLabel.textContent = "ЗВУК: ВЫКЛ";
+        }else{
+            musicControl.classList.remove("muted");
+            musicLabel.textContent = "ЗВУК: ВКЛ";
+        }
+    }
+
+    function tryStartMusic(){
+        if(!bgMusic) return;
+
+        bgMusic.loop = false;
+        bgMusic.volume = 0.50;
+
+        if(!musicStarted){
+            try{
+                bgMusic.currentTime = 0;
+            }catch(e){}
+        }
+
+        var playPromise = bgMusic.play();
+
+        if(playPromise && typeof playPromise.then === "function"){
+            playPromise.then(function(){
+                musicStarted = true;
+                updateMusicButton();
+            }).catch(function(){
+                // Некоторые CEF/браузеры запрещают autoplay до первого
+                // взаимодействия. Следующие GMod callbacks и клик повторят play().
+            });
+        }else{
+            musicStarted = true;
+            updateMusicButton();
+        }
+    }
+
+    musicControl.addEventListener("click", function(){
+        if(!bgMusic) return;
+
+        if(!musicStarted && bgMusic.paused){
+            bgMusic.muted = false;
+            tryStartMusic();
+            updateMusicButton();
+            return;
+        }
+
+        bgMusic.muted = !bgMusic.muted;
+        updateMusicButton();
+    });
+
+    bgMusic.addEventListener("ended", function(){
+        // Намеренно ничего не запускаем заново:
+        // песня проигрывается только один раз.
+        musicStarted = true;
+    });
+
+    bgMusic.addEventListener("canplay", function(){
+        tryStartMusic();
+    }, {once:true});
+
+    document.addEventListener("click", function(){
+        if(bgMusic && bgMusic.paused && !musicStarted){
+            tryStartMusic();
+        }
+    }, {once:true});
+
+    document.addEventListener("keydown", function(){
+        if(bgMusic && bgMusic.paused && !musicStarted){
+            tryStartMusic();
+        }
+    }, {once:true});
+
+    updateMusicButton();
+    setTimeout(tryStartMusic, 0);
+    setTimeout(tryStartMusic, 650);
+
+    var tips = [
+        'Пинок назначен на <span class="tipCode">V</span>: <span class="tipCode">bind v hg_kick</span>. Вместо <span class="tipCode">mouse4</span> укажите удобную клавишу или кнопку мыши.',
+        'Падение и вставание из ragdoll — клавиша <span class="tipCode">G</span>. Если бинда нет: <span class="tipCode">bind g fake</span>.',
+        'Получайте опыт и открывайте новых хищников — чем больше прогресс, тем больше доступных вариантов игры.',
+        'Игроки, вошедшие в топ-10 по опыту, получают дополнительные награды.',
+        'Нажмите <span class="tipCode">F2</span>, чтобы выполнять задания и получать компоненты для крафта.',
+        'Из собранных компонентов можно создать крафтовый бокс с наградами.',
+        'Каждый день в <span class="tipCode">F2</span> доступен бесплатный подарок. Не забудьте его забрать.',
+        'Таблица лидеров по опыту находится в <span class="tipCode">F4</span>.'
+    ];
+
+    var tipIndex = 0;
+
+    function rotateTip(){
+        tipText.classList.add("hide");
+
+        setTimeout(function(){
+            tipIndex = (tipIndex + 1) % tips.length;
+            tipText.innerHTML = tips[tipIndex];
+            tipText.classList.remove("hide");
+        },370);
+    }
+
+    setInterval(rotateTip, 5200);
+
+    var filesTotal = 0;
+    var filesNeeded = 0;
+    var currentFile = "";
+    var currentStatus = "Подготовка к подключению...";
+
+    function doneFiles(){
+        if(filesTotal <= 0) return 0;
+        return Math.max(0,Math.min(filesTotal,filesTotal-filesNeeded));
+    }
+
+    function updateProgress(){
+        var ratio = filesTotal > 0 ? doneFiles()/filesTotal : 0;
+        ratio = Math.max(0,Math.min(1,ratio));
+
+        var pct = Math.round(ratio*100);
+
+        fill.style.width = pct + "%";
+        percent.textContent = pct + "%";
+
+        if(filesTotal > 0){
+            counter.textContent = doneFiles()+" из "+filesTotal+" файлов";
+        }else{
+            counter.textContent = "Ожидание данных Garry's Mod";
+        }
+    }
+
+    function updateStatus(){
+        if(currentFile){
+            status.textContent = "Загрузка: " + currentFile;
+            statusMain.textContent = "Загрузка контента";
+        }else{
+            status.textContent = currentStatus || "Подготовка к подключению...";
+            statusMain.textContent = currentStatus || "Подключение к серверу";
+        }
+    }
+
+    window.GameDetails = function(
+        realServerName,
+        serverurl,
+        currentMap,
+        maxplayers,
+        steamid,
+        gamemode,
+        volume,
+        language
+    ){
+        if(bgMusic && bgMusic.paused && !musicStarted) tryStartMusic();
+
+        if(realServerName) serverName.textContent = realServerName;
+        if(currentMap) mapName.textContent = currentMap;
+        if(gamemode) gamemodeName.textContent = gamemode;
+    };
+
+    window.SetFilesTotal = function(total){
+        if(bgMusic && bgMusic.paused && !musicStarted) tryStartMusic();
+
+        total = Number(total)||0;
+
+        if(total > 0){
+            filesTotal = total;
+            filesNeeded = total;
+            currentStatus = "Получаем список контента...";
+            updateProgress();
+            updateStatus();
+        }
+    };
+
+    window.SetFilesNeeded = function(needed){
+        filesNeeded = Math.max(0,Number(needed)||0);
+        updateProgress();
+    };
+
+    window.DownloadingFile = function(fileName){
+        if(bgMusic && bgMusic.paused && !musicStarted) tryStartMusic();
+
+        currentFile = fileName || "";
+        updateStatus();
+    };
+
+    window.SetStatusChanged = function(newStatus){
+        if(newStatus){
+            currentStatus = newStatus;
+            currentFile = "";
+            updateStatus();
+        }
+    };
+})();
+</script>
+</body>
+</html>
