@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Z HORROR</title>
+<style>
+:root{
+    --red:#b51f2d;
+    --red2:#7f0d18;
+    --paper:#d8d2c7;
+    --ink:#111214;
+    --muted:#9b9892;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050506;color:#eee}
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:
+      radial-gradient(circle at 50% 30%, rgba(60,60,60,.14), transparent 28%),
+      linear-gradient(180deg,#0c0c0e 0%,#060607 55%,#020203 100%);
+}
+
+/* ---------- BACKGROUND ---------- */
+.scene{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    background:
+      linear-gradient(90deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.28) 25%,rgba(0,0,0,.25) 70%,rgba(0,0,0,.82) 100%),
+      linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.75)),
+      repeating-linear-gradient(90deg,#101012 0 70px,#0a0a0b 70px 74px);
+}
+.scene:before{
+    content:"";
+    position:absolute;
+    inset:5% 21% 16%;
+    border-left:18px solid #09090a;
+    border-right:18px solid #09090a;
+    box-shadow:0 0 120px rgba(0,0,0,.9) inset;
+    background:
+      radial-gradient(circle at 50% 9%,rgba(230,230,210,.20),transparent 7%),
+      linear-gradient(180deg,rgba(130,130,120,.08),rgba(0,0,0,.66)),
+      repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 2px,transparent 2px 95px);
+}
+.scene:after{
+    content:"HELP";
+    position:absolute;
+    left:50%;
+    top:20%;
+    transform:translateX(-50%) rotate(-2deg);
+    font:900 clamp(34px,5vw,76px)/1 Arial,sans-serif;
+    letter-spacing:.08em;
+    color:rgba(130,12,22,.48);
+    text-shadow:0 6px 0 rgba(70,0,5,.2);
+}
+.vignette{
+    position:fixed; inset:0; pointer-events:none; z-index:9;
+    box-shadow:inset 0 0 180px 90px rgba(0,0,0,.86);
+}
+.scan{
+    position:fixed;inset:0;z-index:8;pointer-events:none;opacity:.06;
+    background:repeating-linear-gradient(180deg,rgba(255,255,255,.15) 0 1px,transparent 1px 4px);
+}
+.grain{
+    position:fixed; inset:-50%; z-index:8; pointer-events:none; opacity:.06;
+    background-image:
+      radial-gradient(circle at 20% 30%,#fff 0 1px,transparent 1px),
+      radial-gradient(circle at 80% 60%,#fff 0 1px,transparent 1px),
+      radial-gradient(circle at 50% 50%,#fff 0 1px,transparent 1px);
+    background-size:7px 7px,11px 11px,13px 13px;
+    animation:grainMove .3s steps(2) infinite;
+}
+@keyframes grainMove{
+    0%{transform:translate(0,0)}
+    25%{transform:translate(2%,1%)}
+    50%{transform:translate(-1%,2%)}
+    75%{transform:translate(1%,-1%)}
+    100%{transform:translate(0,0)}
+}
+
+/* ---------- HANDMADE COLLAGE ---------- */
+.scrap{
+    position:absolute;
+    z-index:3;
+    background:rgba(205,199,185,.90);
+    color:#171719;
+    padding:12px 15px;
+    box-shadow:0 9px 28px rgba(0,0,0,.45);
+    font-family:"Courier New",monospace;
+    font-weight:700;
+    filter:contrast(.95);
+}
+.scrap:before,.scrap:after{
+    content:"";
+    position:absolute;
+    height:18px;width:52px;
+    background:rgba(180,170,145,.45);
+    top:-10px;
+}
+.scrap:before{left:8px;transform:rotate(-6deg)}
+.scrap:after{right:8px;transform:rotate(7deg)}
+.s1{left:3.5%;top:37%;width:220px;transform:rotate(-7deg)}
+.s2{right:3%;top:39%;width:240px;transform:rotate(5deg)}
+.s3{right:4.7%;bottom:21%;width:190px;transform:rotate(-4deg)}
+.s4{left:4%;bottom:8%;width:220px;transform:rotate(3deg);background:transparent;color:#aaa;box-shadow:none;padding:0}
+.s4:before,.s4:after{display:none}
+.smalltxt{font-size:13px;line-height:1.45}
+.check{display:block;margin:6px 0;font-size:13px}
+.check:before{content:"☐";margin-right:8px;color:var(--red)}
+.check.done:before{content:"☒"}
+
+.photo{
+    position:absolute; z-index:3;
+    background:#c9c2b6;
+    padding:10px 10px 24px;
+    box-shadow:0 12px 38px rgba(0,0,0,.6);
+}
+.photo .img{
+    width:100%;height:100%;
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.03),rgba(0,0,0,.6)),
+      repeating-linear-gradient(90deg,#151517 0 34px,#0b0b0c 34px 38px);
+    position:relative;overflow:hidden;
+}
+.photo .img:after{
+    content:"";
+    position:absolute; left:50%; bottom:0;
+    width:20px;height:65%;
+    transform:translateX(-50%);
+    background:linear-gradient(180deg,transparent,#040405 25%);
+    border-radius:50% 50% 10% 10%;
+    filter:blur(1px);
+}
+.p1{left:3%;top:9%;width:205px;height:185px;transform:rotate(-5deg)}
+.p2{right:3%;top:8%;width:210px;height:170px;transform:rotate(6deg)}
+.hand{
+    position:absolute; z-index:4; color:#9f9a90;
+    font-family:"Courier New",monospace; font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    text-shadow:0 1px 0 #000;
+}
+.h1{left:18%;top:4%;transform:rotate(-4deg);font-size:18px;line-height:1.45}
+.h2{right:17%;top:5%;transform:rotate(3deg);font-size:17px;line-height:1.45;text-align:right}
+.h3{left:40%;bottom:4%;font-size:12px;letter-spacing:.38em;color:#555}
+
+/* ---------- CENTER ---------- */
+.center{
+    position:absolute;z-index:5;
+    left:50%;top:47%;
+    transform:translate(-50%,-50%);
+    width:min(860px,64vw);
+    text-align:center;
+}
+.logo{
+    position:relative;
+    display:inline-flex;
+    align-items:flex-end;
+    gap:10px;
+    filter:drop-shadow(0 16px 30px rgba(0,0,0,.8));
+}
+.logo .z{
+    font:900 clamp(96px,11vw,180px)/.7 Arial Black,Arial,sans-serif;
+    color:var(--red);
+    transform:rotate(-7deg) skewX(-9deg);
+    text-shadow:
+      7px 5px 0 rgba(70,0,5,.55),
+      16px 10px 0 rgba(0,0,0,.35);
+    position:relative;
+}
+.logo .z:after{
+    content:"";
+    position:absolute;
+    left:-16%; right:-18%; bottom:-10px;
+    height:17px;
+    background:var(--red);
+    transform:rotate(-5deg) skewX(-18deg);
+    clip-path:polygon(0 35%,88% 0,100% 45%,67% 62%,18% 100%);
+    opacity:.9;
+}
+.logo .horror{
+    font:900 clamp(44px,6vw,94px)/.8 "Arial Narrow",Arial,sans-serif;
+    letter-spacing:.03em;
+    color:#ded8cb;
+    transform:rotate(-1deg);
+    text-shadow:
+       2px 1px 0 #4c4944,
+       -2px 0 0 #292725,
+       7px 7px 0 rgba(0,0,0,.55);
+    position:relative;
+}
+.logo .horror:after{
+    content:"";
+    position:absolute;left:0;right:0;bottom:-12px;height:4px;
+    background:linear-gradient(90deg,transparent,var(--red),transparent);
+    transform:rotate(-2deg);
+}
+.tagline{
+    margin-top:25px;
+    color:#8b8780;
+    font:700 14px/1 "Courier New",monospace;
+    letter-spacing:.38em;
+    text-transform:uppercase;
+}
+
+/* ---------- LOADING ---------- */
+.loader{
+    width:min(660px,78vw);
+    margin:82px auto 0;
+    text-align:left;
+}
+.info{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:10px;
+    font:700 13px/1.2 "Courier New",monospace;
+    color:#d1cec7;
+}
+.status{
+    max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.percent{color:#eee}
+.bar-shell{
+    position:relative;
+    height:25px;
+    background:#bdb6aa;
+    padding:6px;
+    transform:rotate(-.5deg);
+    box-shadow:0 7px 24px rgba(0,0,0,.55);
+    clip-path:polygon(1% 8%,98% 0,100% 80%,97% 100%,2% 94%,0 20%);
+}
+.bar-shell:after{
+    content:"";
+    position:absolute;inset:3px;
+    border:1px solid rgba(0,0,0,.55);
+    pointer-events:none;
+}
+.bar{
+    width:100%;height:100%;background:#09090a;overflow:hidden;position:relative;
+}
+.fill{
+    width:0;height:100%;
+    background:
+      repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 4px,transparent 4px 8px),
+      linear-gradient(90deg,#6e0d17,#b72031);
+    box-shadow:0 0 20px rgba(181,31,45,.55);
+    transition:none;
+    position:relative;
+}
+.fill:after{
+    content:"";
+    position:absolute;right:-8px;top:-4px;width:24px;height:30px;
+    background:rgba(182,26,44,.65);
+    filter:blur(7px);
+}
+.tip{
+    margin-top:16px;text-align:center;
+    font:700 11px/1.4 "Courier New",monospace;
+    color:#77746f;
+}
+
+/* ---------- RED SCRATCHES ---------- */
+.slash{
+    position:absolute;z-index:4;background:var(--red);opacity:.85;
+    height:5px;box-shadow:0 0 18px rgba(170,20,30,.25);
+}
+.sl1{width:120px;left:23%;top:34%;transform:rotate(-17deg)}
+.sl2{width:84px;left:26%;top:36%;transform:rotate(-14deg)}
+.sl3{width:110px;right:22%;bottom:31%;transform:rotate(8deg)}
+.cross{
+    position:absolute;z-index:4;left:50%;top:50%;
+    width:1px;height:1px;
+}
+
+/* responsive */
+@media (max-width:900px){
+    .p1,.p2,.s1,.s2,.s3,.s4,.h1,.h2{opacity:.48;transform:scale(.82)}
+    .p1{left:-55px}.p2{right:-55px}
+    .s1{left:-60px}.s2{right:-60px}.s3{right:-45px;bottom:23%}.s4{left:-45px}
+    .center{width:84vw}
+    .loader{margin-top:60px}
+    }
+
+</style>
+</head>
+<body>
+
+<div class="scene"></div>
+
+<div class="photo p1">
+  <div class="img"></div>
+</div>
+
+<div class="photo p2">
+  <div class="img"></div>
+</div>
+
+<div class="scrap s1 smalltxt">
+    Некоторые двери<br>
+    лучше не открывать...
+    <br><br>☻
+</div>
+
+<div class="scrap s2 smalltxt">
+    НОВЫЕ ЛЮДИ<br>
+    ТЕ ЖЕ ПРОБЛЕМЫ.
+</div>
+
+<div class="scrap s3">
+    <span class="check done">ВЫЖИВАЙ</span>
+    <span class="check done">ИССЛЕДУЙ</span>
+    <span class="check">ДОВЕРЯЙ ?</span>
+    <span class="check">ОСТАВАЙСЯ ЧЕЛОВЕКОМ</span>
+</div>
+
+<div class="scrap s4">
+    GARRY'S MOD<br>
+    HORROR SERVER
+</div>
+
+<div class="hand h1">
+    SAME MAPS<br>
+    DIFFERENT<br>
+    NIGHTMARES
+</div>
+
+<div class="hand h2">
+    PEOPLE<br>
+    PLAY<br>
+    DIFFERENT<br>
+    HERE
+</div>
+
+<div class="hand h3">PLAY • SURVIVE • REPEAT</div>
+
+<div class="slash sl1"></div>
+<div class="slash sl2"></div>
+<div class="slash sl3"></div>
+
+<div class="center">
+    <div class="logo">
+        <div class="z">Z</div>
+        <div class="horror">HORROR</div>
+    </div>
+
+    <div class="tagline">survive the night</div>
+
+    <div class="loader">
+        <div class="info">
+            <div class="status" id="status">Подключение к серверу...</div>
+            <div class="percent" id="percent">0%</div>
+        </div>
+
+        <div class="bar-shell">
+            <div class="bar">
+                <div class="fill" id="fill"></div>
+            </div>
+        </div>
+
+        <div class="tip" id="tip">
+            Совет: Иногда тишина опаснее любых звуков.
+        </div>
+    </div>
+</div>
+
+<div class="scan"></div>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<script>
+const statusEl = document.getElementById("status");
+const percentEl = document.getElementById("percent");
+const fillEl = document.getElementById("fill");
+const tipEl = document.getElementById("tip");
+
+let totalFiles = 1;
+let neededFiles = 1;
+
+// Реальный визуальный прогресс и цель разделены,
+// поэтому даже редкие GMod callbacks отображаются плавно.
+let shownProgress = 0;
+let targetProgress = 0;
+
+let gmodActive = false;
+let stageName = "connecting";
+let stageCeiling = 8;
+let lastSignal = Date.now();
+
+const tips = [
+    "Совет: Иногда тишина опаснее любых звуков.",
+    "Совет: Не каждый звук хочет, чтобы ты его нашёл.",
+    "Совет: Если свет погас — не стой на месте.",
+    "Совет: Некоторые двери лучше оставить закрытыми.",
+    "Совет: Здесь всегда кто-то наблюдает."
+];
+
+function clamp(v, min, max){
+    return Math.max(min, Math.min(max, v));
+}
+
+function pushProgress(value){
+    // Во время реальной загрузки никогда визуально не откатываемся назад.
+    targetProgress = Math.max(targetProgress, clamp(value, 0, 100));
+    lastSignal = Date.now();
+}
+
+function drawProgress(){
+    // Чем дальше цель, тем быстрее догоняем.
+    // Ближе к цели движение мягко замедляется.
+    const diff = targetProgress - shownProgress;
+
+    if (diff > 0.001){
+        let speed = diff * 0.085;
+        speed = clamp(speed, 0.045, 1.15);
+        shownProgress = Math.min(targetProgress, shownProgress + speed);
+    }
+
+    // Процент меняется целыми числами, сама полоса — дробно.
+    fillEl.style.width = shownProgress.toFixed(2) + "%";
+    percentEl.textContent = Math.floor(shownProgress) + "%";
+
+    requestAnimationFrame(drawProgress);
+}
+
+function setStage(name, floor, ceiling){
+    stageName = name;
+    stageCeiling = ceiling;
+    pushProgress(floor);
+}
+
+function understandStatus(status){
+    const s = String(status || "").toLowerCase();
+
+    // Эти проценты — визуальное распределение стадий.
+    // Официальный Loading URL не получает общий engine %, поэтому
+    // последние этапы строятся по реальным текстовым статусам GMod.
+    if (
+        s.includes("retrieving server info") ||
+        s.includes("получение информации") ||
+        s.includes("connecting")
+    ){
+        setStage("connecting", 4, 12);
+        return;
+    }
+
+    if (
+        s.includes("workshop") ||
+        s.includes("download complete") ||
+        s.includes("downloads complete")
+    ){
+        setStage("workshop", 76, 82);
+        return;
+    }
+
+    if (
+        s.includes("sending client info") ||
+        s.includes("client info")
+    ){
+        setStage("clientinfo", 82, 88);
+        return;
+    }
+
+    if (
+        s.includes("starting lua") ||
+        s.includes("starting client")
+    ){
+        setStage("startinglua", 88, 94);
+        return;
+    }
+
+    if (s.includes("lua started")){
+        setStage("luastarted", 94, 99.2);
+        return;
+    }
+
+    if (
+        s.includes("ready") ||
+        s.includes("complete") ||
+        s.includes("entering") ||
+        s.includes("joining")
+    ){
+        setStage("complete", 99.4, 100);
+        return;
+    }
+}
+
+/* ---------- GMod callbacks ---------- */
+
+function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode){
+    gmodActive = true;
+    if(mapname){
+        statusEl.textContent = "Загрузка карты: " + mapname;
+    }else{
+        statusEl.textContent = "Подключение к серверу...";
+    }
+    setStage("connecting", 2, 10);
+}
+
+function SetFilesTotal(total){
+    gmodActive = true;
+    totalFiles = Math.max(Number(total) || 1, 1);
+    neededFiles = totalFiles;
+
+    // Файлы занимают 5–75% визуальной шкалы.
+    setStage("files", 5, 75);
+}
+
+function SetFilesNeeded(needed){
+    gmodActive = true;
+
+    neededFiles = Math.max(Number(needed) || 0, 0);
+    const done = Math.max(0, totalFiles - neededFiles);
+    const fileRatio = totalFiles > 0 ? done / totalFiles : 0;
+
+    // 5..75% — загрузка файлов.
+    const mapped = 5 + (fileRatio * 70);
+    stageName = "files";
+    stageCeiling = 75;
+    pushProgress(mapped);
+
+    if(neededFiles <= 0){
+        pushProgress(75);
+    }
+}
+
+function DownloadingFile(fileName){
+    gmodActive = true;
+
+    if(!fileName) return;
+    const clean = String(fileName).replace(/\/g,"/").split("/").pop();
+    statusEl.textContent = "Загрузка: " + clean;
+}
+
+function SetStatusChanged(status){
+    gmodActive = true;
+
+    if(status){
+        statusEl.textContent = status;
+        understandStatus(status);
+    }
+}
+
+/* Между callbacks полоса немного живёт,
+   но никогда не пересекает потолок текущей стадии. */
+setInterval(()=>{
+    if(!gmodActive) return;
+
+    const silence = Date.now() - lastSignal;
+
+    if(silence > 650 && targetProgress < stageCeiling){
+        let creep = 0.035;
+
+        if(stageName === "luastarted") creep = 0.055;
+        if(stageName === "startinglua") creep = 0.045;
+        if(stageName === "files") creep = 0.015;
+
+        targetProgress = Math.min(stageCeiling, targetProgress + creep);
+    }
+}, 100);
+
+/* Предпросмотр при открытии index.html обычным браузером. */
+setInterval(()=>{
+    if(gmodActive) return;
+
+    if(targetProgress < 72){
+        targetProgress += Math.random() * 0.45;
+    }else if(targetProgress < 94){
+        targetProgress += Math.random() * 0.12;
+    }
+}, 350);
+
+setInterval(()=>{
+    tipEl.textContent = tips[Math.floor(Math.random()*tips.length)];
+},6500);
+
+drawProgress();
+</script>
+
+<audio id="bgMusic" autoplay loop preload="auto">
+    <source src="https://raw.githubusercontent.com/idelit81-ship-it/songs/main/Fears%20to%20Fathom%20-%20Ironbark%20Lookout%20_%20Truck%20Radio%20Song%20%234%20(Tuesday)%20%E2%99%AA%20%5BSound%20Effect%5D_128k.ogg" type="audio/ogg">
+</audio>
+
+
+<script>
+const bgMusic = document.getElementById("bgMusic");
+if (bgMusic) {
+    bgMusic.volume = 1.0;
+    bgMusic.play().catch(() => {});
+}
+</script>
+
+</body>
+</html>
